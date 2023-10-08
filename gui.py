@@ -112,6 +112,7 @@ class GUI:
         if self.hascallback:
             self.execute_callback()
             self.isexecuted = True
+            messagebox.showinfo("Success", "Program executed successfully!")
         else:
             raise Exception("No execute_callback function!")
         
