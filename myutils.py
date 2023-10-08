@@ -1,9 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-import bibtexparser
 import os
-from paperdinfo import*
 
+# Class DownPDF can only down a few pdfs. Not for downing bibtex.
+# from paperdinfo import*
 class DownPDF:
     def __init__(self, down_folder_path, reference):
         self.down_path = down_folder_path
@@ -28,15 +28,15 @@ class DownPDF:
             file.write(pdf.content)
 
 class Downfile:
-    def __init__(self,pdf_reader,down_path,filetype = 1):
+    def __init__(self,ref_titles,down_path,filetype = 1):
         # filetype: bibtex is 1, pdf is 0.
-        self.pdf = pdf_reader
+        self.ref_titles = ref_titles
         self.path = down_path
         self.filetype = filetype 
         self.bibtexes = []
 
     def getbibfromDBLP(self):
-        for ref in self.pdf.ref_titles:
+        for ref in self.ref_titles:
             bibtex = ""
             url = f"https://dblp.org/search?q={ref}&h=1000&f=0&t=o"
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
@@ -54,10 +54,13 @@ class Downfile:
             bibtex = pre_e.get_text(strip=True)
             self.bibtexes.append(bibtex)
             
-        # test
-        with open('output.bib', 'w') as bibfile:
+        # Write the bibtex
+        file_name = "references.bib"
+        file_path = os.path.join(self.path, file_name)
+        with open(file_path, 'w') as bibfile:
             for bibtex in self.bibtexes:
                 bibfile.write(bibtex + '\n')
+                
         
 
 # Debug
