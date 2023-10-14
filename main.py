@@ -15,6 +15,8 @@ def execute_program(gui):
         # Down the bibtex
         down_file = Downfile(pdf_reader.ref_titles, gui.output_path.get())
         down_file.getbibfromDBLP()
+        
+        # Down the arXiv paper from references
         down_pdfs = DownPDF(pdf_reader.references, gui.output_path.get())
         down_pdfs.extract_arxiv_ids()
         down_pdfs.getarxivpdf()
